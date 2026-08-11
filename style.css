@@ -166,6 +166,12 @@ html:lang(en) .brand-name{ font-family:"Fraunces",serif; }
   margin-bottom:14px; color:var(--brass);
 }
 .watch-icon{ opacity:.8; }
+.card-media img{ width:100%; height:100%; object-fit:cover; border-radius:2px; }
+
+.empty-state{
+  grid-column:1/-1; text-align:center; color:var(--ink-soft);
+  font-size:14px; padding:52px 20px; border:1px dashed var(--line); border-radius:3px;
+}
 
 .add-btn{
   position:absolute; bottom:8px; inset-inline-end:8px;
@@ -219,6 +225,15 @@ html:lang(en) .brand-name{ font-family:"Fraunces",serif; }
 @media (min-width:640px){ .modal-box{ border-radius:6px; } }
 .modal-box h3{ font-size:20px; margin-bottom:12px; padding-inline-end:24px; }
 .modal-box p, .modal-box div{ font-size:14px; line-height:1.8; color:var(--ink-soft); }
+
+.cart-line{
+  display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid var(--line);
+}
+.cart-line-info{ flex:1; }
+.cart-line-info strong{ color:var(--ink); font-size:13.5px; }
+.cart-line-variant{ font-size:12px; color:var(--ink-soft); }
+.cart-line-price{ font-size:13px; color:var(--ink); white-space:nowrap; }
+.cart-remove{ background:none; border:none; color:var(--oxblood); font-size:14px; cursor:pointer; padding:4px; }
 .modal-close{
   position:absolute; top:16px; inset-inline-end:16px;
   background:none; border:none; color:var(--ink-soft); font-size:16px;
