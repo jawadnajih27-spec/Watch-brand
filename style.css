@@ -1,0 +1,245 @@
+/* =====================================================================
+   AURUM — Luxury Watch Store
+   Design tokens
+   Color   : porcelain white / charcoal ink / brushed brass / oxblood
+   Type    : Fraunces + Markazi Text (display) — Inter + IBM Plex Sans Arabic (body)
+   Signature: watch-bezel tick-ring used as section dividers & hero dial
+   ===================================================================== */
+
+:root[data-theme="light"]{
+  --bg:#FBFAF6;
+  --surface:#FFFFFF;
+  --surface-2:#F3F0E9;
+  --ink:#17140F;
+  --ink-soft:#68624F;
+  --line:#E6E0D2;
+  --brass:#A9803F;
+  --brass-strong:#8A6A2F;
+  --oxblood:#7A2430;
+  --shadow: 0 1px 2px rgba(23,20,15,.05), 0 8px 24px rgba(23,20,15,.06);
+}
+
+:root[data-theme="dark"]{
+  --bg:#0F0D09;
+  --surface:#18150F;
+  --surface-2:#211D15;
+  --ink:#F5F0E4;
+  --ink-soft:#B6AC94;
+  --line:#2B2519;
+  --brass:#CBA25E;
+  --brass-strong:#E3BC7C;
+  --oxblood:#D67783;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 28px rgba(0,0,0,.45);
+}
+
+*{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:"IBM Plex Sans Arabic","Inter",system-ui,sans-serif;
+  transition:background .25s ease, color .25s ease;
+  -webkit-font-smoothing:antialiased;
+}
+html:lang(en) body{ font-family:"Inter","IBM Plex Sans Arabic",system-ui,sans-serif; }
+
+h1,h2,h3{
+  font-family:"Markazi Text","Fraunces",serif;
+  font-weight:600;
+  margin:0;
+  letter-spacing:.2px;
+}
+html:lang(en) h1, html:lang(en) h2, html:lang(en) h3{
+  font-family:"Fraunces","Markazi Text",serif;
+}
+
+a{ color:inherit; text-decoration:none; }
+button{ font-family:inherit; cursor:pointer; }
+
+:focus-visible{ outline:2px solid var(--brass); outline-offset:2px; }
+
+/* ---------- signature: bezel tick divider ---------- */
+.bezel-divider{
+  height:12px;
+  background:
+    repeating-linear-gradient(90deg, var(--brass) 0 2px, transparent 2px 40px) center/100% 100% no-repeat,
+    repeating-linear-gradient(90deg, var(--line) 0 1px, transparent 1px 8px) center/100% 52% no-repeat;
+  opacity:.85;
+}
+.bezel-divider.small{ height:9px; max-width:220px; margin-top:14px; }
+
+/* ---------- header ---------- */
+.site-header{ position:sticky; top:0; z-index:20; background:var(--bg); }
+.header-inner{
+  max-width:1160px; margin:0 auto; padding:16px 20px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.brand{ display:flex; align-items:center; gap:8px; color:var(--ink); }
+.brand-mark{ color:var(--brass); display:flex; }
+.brand-name{ font-family:"Markazi Text","Fraunces",serif; font-size:22px; font-weight:700; letter-spacing:1px; }
+html:lang(en) .brand-name{ font-family:"Fraunces",serif; }
+
+.header-controls{ display:flex; align-items:center; gap:6px; }
+.icon-btn{
+  position:relative; width:38px; height:38px; border-radius:50%;
+  border:1px solid var(--line); background:var(--surface); color:var(--ink);
+  display:flex; align-items:center; justify-content:center;
+  font-size:12px; font-weight:600; letter-spacing:.5px;
+  transition:border-color .2s ease, transform .2s ease;
+}
+.icon-btn:hover{ border-color:var(--brass); transform:translateY(-1px); }
+.ic-moon{ display:none; }
+:root[data-theme="dark"] .ic-sun{ display:none; }
+:root[data-theme="dark"] .ic-moon{ display:block; }
+
+.cart-count{
+  position:absolute; top:-4px; left:-4px;
+  background:var(--oxblood); color:#fff; font-size:10px; font-weight:600;
+  min-width:16px; height:16px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center; padding:0 3px;
+}
+
+/* ---------- hero ---------- */
+.hero{
+  max-width:1160px; margin:0 auto; padding:56px 20px 28px;
+  display:flex; align-items:center; justify-content:space-between; gap:32px;
+}
+.hero-eyebrow{
+  font-size:12px; letter-spacing:2px; text-transform:uppercase;
+  color:var(--brass-strong); margin:0 0 14px;
+}
+.hero-text h1{ font-size:56px; line-height:1.05; color:var(--ink); }
+.hero-sub{ color:var(--ink-soft); font-size:16px; max-width:38ch; margin:18px 0 26px; line-height:1.7; }
+.btn-primary{
+  display:inline-block; background:var(--ink); color:var(--bg);
+  padding:14px 30px; border-radius:2px; font-size:14px; letter-spacing:.5px;
+  transition:opacity .2s ease;
+}
+.btn-primary:hover{ opacity:.82; }
+.hero-art{ color:var(--brass); opacity:.9; flex-shrink:0; }
+.hero-art svg{ width:180px; height:180px; }
+
+.trust-row{
+  max-width:1160px; margin:0 auto; padding:0 20px 44px;
+  display:flex; gap:10px; align-items:center; justify-content:center;
+  color:var(--ink-soft); font-size:13px; letter-spacing:.3px;
+  border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  padding-top:18px; padding-bottom:18px; flex-wrap:wrap;
+}
+.trust-row .dot{ color:var(--brass); }
+
+/* ---------- collection ---------- */
+.collection{ max-width:1160px; margin:0 auto; padding:52px 20px 20px; }
+.section-head{ margin-bottom:30px; }
+.section-head h2{ font-size:30px; }
+
+.grid{
+  display:grid; grid-template-columns:repeat(2,1fr); gap:16px 14px;
+}
+@media (min-width:720px){
+  .grid{ grid-template-columns:repeat(3,1fr); gap:24px; }
+}
+@media (min-width:1020px){
+  .grid{ grid-template-columns:repeat(4,1fr); }
+}
+
+.card{
+  background:var(--surface); border:1px solid var(--line); border-radius:3px;
+  padding:14px 14px 18px; position:relative;
+  transition:border-color .2s ease, transform .2s ease;
+}
+.card:hover{ border-color:var(--brass); transform:translateY(-2px); box-shadow:var(--shadow); }
+
+.badge{
+  position:absolute; top:12px; inset-inline-start:12px;
+  font-size:10px; letter-spacing:.6px; padding:4px 9px; border-radius:2px;
+  background:var(--surface-2); color:var(--ink-soft); border:1px solid var(--line);
+  text-transform:uppercase;
+}
+.badge.new{ color:var(--brass-strong); border-color:var(--brass); }
+.badge.best{ color:var(--oxblood); border-color:var(--oxblood); }
+
+.card-media{
+  background:var(--surface-2); border-radius:2px; aspect-ratio:1/1;
+  display:flex; align-items:center; justify-content:center; position:relative;
+  margin-bottom:14px; color:var(--brass);
+}
+.watch-icon{ opacity:.8; }
+
+.add-btn{
+  position:absolute; bottom:8px; inset-inline-end:8px;
+  width:34px; height:34px; border-radius:50%;
+  background:var(--ink); color:var(--bg); border:none;
+  font-size:18px; line-height:1; display:flex; align-items:center; justify-content:center;
+  transition:transform .2s ease, background .2s ease;
+}
+.add-btn:hover{ background:var(--brass-strong); }
+.add-btn.pulse{ animation:pulse .35s ease; }
+@keyframes pulse{ 50%{ transform:scale(1.18); } }
+
+.card-name{ font-size:16px; margin-bottom:3px; }
+.card-sub{ font-size:12.5px; color:var(--ink-soft); margin:0 0 8px; }
+.card-rating{ font-size:12.5px; color:var(--brass-strong); margin-bottom:8px; }
+.card-rating .reviews{ color:var(--ink-soft); }
+
+.card-price{ display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; }
+.price{ font-size:16px; font-weight:600; }
+.old-price{ font-size:12.5px; color:var(--ink-soft); text-decoration:line-through; }
+
+/* ---------- footer ---------- */
+.site-footer{ margin-top:64px; border-top:1px solid var(--line); }
+.footer-inner{
+  max-width:1160px; margin:0 auto; padding:40px 20px 60px;
+  display:flex; flex-direction:column; align-items:center; gap:18px; text-align:center;
+}
+.footer-brand{ display:flex; align-items:center; gap:8px; color:var(--brass); }
+.footer-brand .brand-name{ color:var(--ink); }
+.footer-links{ display:flex; gap:22px; flex-wrap:wrap; justify-content:center; }
+.footer-link{
+  background:none; border:none; color:var(--ink-soft); font-size:13px;
+  border-bottom:1px solid transparent; padding:2px 0;
+}
+.footer-link:hover{ color:var(--ink); border-color:var(--brass); }
+.footer-copy{ font-size:12px; color:var(--ink-soft); margin:0; }
+
+/* ---------- modal ---------- */
+.modal-overlay{
+  position:fixed; inset:0; background:rgba(15,13,9,.55);
+  display:flex; align-items:flex-end; justify-content:center;
+  opacity:0; pointer-events:none; transition:opacity .2s ease; z-index:50;
+}
+@media (min-width:640px){ .modal-overlay{ align-items:center; } }
+.modal-overlay.open{ opacity:1; pointer-events:auto; }
+.modal-box{
+  background:var(--surface); color:var(--ink); border-radius:6px 6px 0 0;
+  max-width:480px; width:100%; padding:28px 24px 32px; position:relative;
+  box-shadow:var(--shadow);
+}
+@media (min-width:640px){ .modal-box{ border-radius:6px; } }
+.modal-box h3{ font-size:20px; margin-bottom:12px; padding-inline-end:24px; }
+.modal-box p, .modal-box div{ font-size:14px; line-height:1.8; color:var(--ink-soft); }
+.modal-close{
+  position:absolute; top:16px; inset-inline-end:16px;
+  background:none; border:none; color:var(--ink-soft); font-size:16px;
+}
+
+/* ---------- whatsapp ---------- */
+.whatsapp-fab{
+  position:fixed; bottom:20px; inset-inline-start:20px; z-index:30;
+  width:52px; height:52px; border-radius:50%; background:#25D366; color:#fff;
+  display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow);
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion:reduce){
+  html{ scroll-behavior:auto; }
+  *{ animation:none !important; transition:none !important; }
+}
+
+/* ---------- small screens ---------- */
+@media (max-width:480px){
+  .hero{ flex-direction:column; text-align:center; padding-top:36px; }
+  .hero-text h1{ font-size:42px; }
+  .hero-art svg{ width:140px; height:140px; }
+}
