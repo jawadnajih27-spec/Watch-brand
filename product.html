@@ -127,6 +127,18 @@
   </div>
 </div>
 
+<!-- ============ CART ============ -->
+<div class="modal-overlay" id="cart-overlay">
+  <div class="modal-box" role="dialog" aria-modal="true">
+    <button class="modal-close" id="cart-close" aria-label="إغلاق">✕</button>
+    <h3 data-i18n="cartTitle">سلتك</h3>
+    <div id="cart-items"></div>
+    <p class="empty-state small" id="cart-empty" data-i18n="cartEmpty" hidden>السلة فارغة.</p>
+    <div id="cart-total" style="font-weight:600; color:var(--ink); margin-top:8px;"></div>
+    <a href="#" id="cart-whatsapp-btn" class="btn-primary" target="_blank" rel="noopener" style="display:block; text-align:center; margin-top:16px;" data-i18n="orderNow">اطلب الآن</a>
+  </div>
+</div>
+
 <!-- ============ ORDER MODAL ============ -->
 <div class="modal-overlay" id="order-overlay">
   <div class="modal-box" role="dialog" aria-modal="true">
@@ -152,9 +164,9 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="assets/supabase-client.js"></script>
 <script src="assets/i18n.js"></script>
+<script src="assets/cart.js"></script>
 <script>
 let lang = localStorage.getItem("aurum_lang") || "ar";
-let cartCount = 0;
 let PRODUCT = null;
 let FOOTER = [];
 let SETTINGS = null;
@@ -312,10 +324,22 @@ async function loadCarousel(){
   }).join("");
 }
 
-/* ---------- إضافة إلى السلة (تجريبي) ---------- */
+/* ---------- إضافة إلى السلة ---------- */
 document.getElementById("add-cart-btn").addEventListener("click", () => {
-  cartCount++;
-  document.getElementById("cart-count").textContent = cartCount;
+  addToCart({
+    id: PRODUCT.id,
+    name: lang === "ar" ? PRODUCT.name_ar : PRODUCT.name_en,
+    price: PRODUCT.price,
+    band: selectedBand ? (lang === "ar" ? selectedBand.label_ar : selectedBand.label_en) : null,
+    color: selectedColor ? (lang === "ar" ? selectedColor.label_ar : selectedColor.label_en) : null,
+    qty: 1
+  });
+});
+
+document.getElementById("cart-btn").addEventListener("click", () => renderCartDrawer(SETTINGS?.whatsapp_number));
+document.getElementById("cart-close").addEventListener("click", () => document.getElementById("cart-overlay").classList.remove("open"));
+document.getElementById("cart-overlay").addEventListener("click", (e) => {
+  if (e.target.id === "cart-overlay") e.target.classList.remove("open");
 });
 
 /* ---------- نافذة الطلب + تتبع الاستمارات المتروكة ---------- */
@@ -425,6 +449,7 @@ async function boot(){
   renderProduct();
   loadReviews();
   loadCarousel();
+  updateCartBadge();
   logVisit("product", PRODUCT.id);
 }
 boot();
