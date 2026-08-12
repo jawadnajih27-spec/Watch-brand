@@ -114,7 +114,14 @@
     <div id="cart-items"></div>
     <p class="empty-state small" id="cart-empty" data-i18n="cartEmpty" hidden>السلة فارغة.</p>
     <div id="cart-total" style="font-weight:600; color:var(--ink); margin-top:8px;"></div>
-    <a href="#" id="cart-whatsapp-btn" class="btn-primary" target="_blank" rel="noopener" style="display:block; text-align:center; margin-top:16px;" data-i18n="orderNow">اطلب الآن</a>
+    <form id="cart-checkout-form" hidden>
+      <input type="text" name="customer_name" required data-i18n-ph="yourName" placeholder="الاسم الكامل">
+      <input type="tel" name="phone" required data-i18n-ph="phone" placeholder="رقم الهاتف">
+      <input type="text" name="city" data-i18n-ph="city" placeholder="المدينة">
+      <textarea name="address" rows="2" data-i18n-ph="address" placeholder="العنوان بالتفصيل"></textarea>
+      <button type="submit" class="btn-order" data-i18n="confirmOrder">تأكيد الطلب</button>
+      <p class="form-success" id="cart-order-success" hidden data-i18n="orderThanks">تم استلام طلبك بنجاح!</p>
+    </form>
   </div>
 </div>
 
