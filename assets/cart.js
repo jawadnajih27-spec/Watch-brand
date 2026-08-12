@@ -121,13 +121,8 @@ async function saveCartAbandoned(form){
     last_field_filled: document.activeElement?.name || null
   };
 
-  if (cartAbandonedId){
-    await deleteAbandonedCart(cartAbandonedId);
-    cartAbandonedId = null;
-  }
-  const { data, error } = await sb.from("abandoned_carts").insert(entry).select("id").single();
-  alert("تشخيص مؤقت — " + (error ? "خطأ: " + error.message : "نجح، id: " + data.id));
-  cartAbandonedId = error ? null : data.id;
+  if (cartAbandonedId) return;
+  cartAbandonedId = await logAbandonedCart(entry);
 }
 
 /** يربط أحداث نموذج تأكيد السلة مرة واحدة فقط (يتفادى تكرار الربط عند كل فتح) */
