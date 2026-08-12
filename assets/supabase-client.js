@@ -61,10 +61,11 @@ async function fetchReviews(productId){
   return data || [];
 }
 
-/** يضيف تقييم/تعليق جديد من عميل */
+/** يضيف تقييم/تعليق جديد من عميل، ويحدّث تلقائيًا معدّل تقييم المنتج وعدد التعليقات */
 async function insertReview({ product_id, customer_name, rating, comment }){
   const { error } = await sb.from("reviews").insert({ product_id, customer_name, rating, comment });
   if (error){ console.warn("[insertReview]", error.message); return false; }
+  await sb.rpc("recalculate_product_rating", { p_id: product_id });
   return true;
 }
 
@@ -99,4 +100,24 @@ async function fetchFooterContent(){
     .order("sort_order", { ascending: true });
   if (error){ console.warn("[footer_content]", error.message); return []; }
   return data || [];
+}
+
+/** يسجل زيارة (صفحة رئيسية أو صفحة منتج) مع معرّف زائر مجهول ثابت */
+async function logVisit(page, productId = null){
+  try{
+    let visitorId = localStorage.getItem("aurum_visitor_id");
+    if (!visitorId){
+      visitorId = crypto.randomUUID();
+      localStorage.setItem("aurum_visitor_id", visitorId);
+    }
+    const { error } = await sb.from("visits").insert({
+      page,
+      product_id: productId,
+      visitor_id: visitorId,
+      referrer: document.referrer || null
+    });
+    if (error) console.warn("[logVisit]", error.message);
+  }catch(e){
+    console.warn("[logVisit]", e);
+  }
 }
