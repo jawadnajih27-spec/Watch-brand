@@ -100,36 +100,46 @@ function renderCartDrawer(whatsappNumber){
   wireCartForm(whatsappNumber);
 }
 
+/** يسجّل (أو يحدّث) سلة مهجورة للسلة الحالية إذا كان الاسم والهاتف معبّأين */
+async function saveCartAbandoned(form){
+  if (cartOrderSubmitted) return;
+  const cart = getCart();
+  if (!cart.length) return;
+  const name = form.customer_name.value.trim();
+  const phone = form.phone.value.trim();
+  if (!name || !phone) return;
+
+  const entry = {
+    product_id: null,
+    product_name: cart.map(it => it.name).join("، "),
+    band_type: null,
+    color: null,
+    customer_name: name,
+    phone,
+    city: form.city.value.trim(),
+    address: form.address.value.trim(),
+    last_field_filled: document.activeElement?.name || null
+  };
+
+  if (cartAbandonedId){
+    await deleteAbandonedCart(cartAbandonedId);
+    cartAbandonedId = null;
+  }
+  cartAbandonedId = await logAbandonedCart(entry);
+}
+
 /** يربط أحداث نموذج تأكيد السلة مرة واحدة فقط (يتفادى تكرار الربط عند كل فتح) */
 function wireCartForm(whatsappNumber){
   const form = document.getElementById("cart-checkout-form");
   if (form.dataset.wired) return;
   form.dataset.wired = "1";
 
-  form.addEventListener("input", debounceCart(async () => {
-    if (cartOrderSubmitted) return;
-    const cart = getCart();
-    if (!cart.length) return;
-    const name = form.customer_name.value.trim();
-    const phone = form.phone.value.trim();
-    if (!name || !phone) return;
-
-    if (cartAbandonedId){
-      await deleteAbandonedCart(cartAbandonedId);
-      cartAbandonedId = null;
-    }
-    cartAbandonedId = await logAbandonedCart({
-      product_id: null,
-      product_name: cart.map(it => it.name).join("، "),
-      band_type: null,
-      color: null,
-      customer_name: name,
-      phone,
-      city: form.city.value.trim(),
-      address: form.address.value.trim(),
-      last_field_filled: document.activeElement?.name || null
-    });
-  }, 1200));
+  // حفظ مؤجَّل أثناء الكتابة المتواصلة
+  form.addEventListener("input", debounceCart(() => saveCartAbandoned(form), 900));
+  // حفظ فوري بمجرد مغادرة أي حقل تغيّرت قيمته (يلتقط حالة "غادر بسرعة")
+  form.addEventListener("change", () => saveCartAbandoned(form));
+  // حفظ فوري أيضًا إذا غادر الصفحة/أغلق التبويب وهو معبّي الحقول
+  window.addEventListener("pagehide", () => saveCartAbandoned(form));
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -161,10 +171,9 @@ function wireCartForm(whatsappNumber){
 
     document.getElementById("cart-order-success").hidden = false;
     form.querySelectorAll("input, textarea, button[type=submit]").forEach(el => el.disabled = true);
- 
+
     window.open(buildWhatsAppLink(cart, whatsappNumber), "_blank");
     saveCart([]);
     setTimeout(() => document.getElementById("cart-overlay").classList.remove("open"), 1800);
   });
 }
-
