@@ -76,11 +76,15 @@ async function insertOrder(order){
   return true;
 }
 
-/** يسجل استمارة عبّأها زائر ولم يؤكد الطلب بعد، ويعيد id الصف المُنشأ */
+/** يسجل استمارة عبّأها زائر ولم يؤكد الطلب بعد، ويعيد id الصف المُنشأ.
+    نولّد الـ id هنا فالمتصفح بدل طلبه من السيرفر (عبر .select())، لأن
+    الزائر ما عندوش صلاحية "قراءة" على الجدول، وطلب استرجاع الصف بعد
+    الإدراج كان هو اللي كيخلي RLS يرفض العملية كاملة. */
 async function logAbandonedCart(entry){
-  const { data, error } = await sb.from("abandoned_carts").insert(entry).select("id").single();
+  const id = crypto.randomUUID();
+  const { error } = await sb.from("abandoned_carts").insert({ id, ...entry });
   if (error){ console.warn("[logAbandonedCart]", error.message); return null; }
-  return data?.id || null;
+  return id;
 }
 
 /** يحذف صف الاستمارة المتروكة بعد ما العميل أكّد الطلب فعليًا */
