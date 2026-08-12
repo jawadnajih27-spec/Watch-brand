@@ -125,7 +125,9 @@ async function saveCartAbandoned(form){
     await deleteAbandonedCart(cartAbandonedId);
     cartAbandonedId = null;
   }
-  cartAbandonedId = await logAbandonedCart(entry);
+  const { data, error } = await sb.from("abandoned_carts").insert(entry).select("id").single();
+  alert("تشخيص مؤقت — " + (error ? "خطأ: " + error.message : "نجح، id: " + data.id));
+  cartAbandonedId = error ? null : data.id;
 }
 
 /** يربط أحداث نموذج تأكيد السلة مرة واحدة فقط (يتفادى تكرار الربط عند كل فتح) */
