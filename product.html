@@ -58,6 +58,8 @@
       <span class="old-price" id="product-old-price" hidden></span>
     </div>
 
+    <p class="stock-note" id="stock-note" hidden></p>
+
     <div class="variant-group" id="band-group" hidden>
       <p class="variant-label" data-i18n="type">النوعية</p>
       <div class="pill-row" id="band-pills"></div>
@@ -222,6 +224,25 @@ function renderProduct(){
     badgeEl.className = "badge " + (p.badge === "bestseller" ? "best" : p.badge);
     badgeEl.textContent = p.badge === "new" ? DICT.badgeNew : DICT.badgeBest;
   } else badgeEl.hidden = true;
+
+  const stockNote = document.getElementById("stock-note");
+  const orderBtn = document.getElementById("order-btn");
+  const cartBtn = document.getElementById("add-cart-btn");
+  if (p.stock_status === "out_of_stock"){
+    stockNote.textContent = lang === "ar" ? "غير متوفر حاليًا" : "Currently out of stock";
+    stockNote.className = "stock-note out";
+    stockNote.hidden = false;
+    orderBtn.disabled = true; cartBtn.disabled = true;
+  } else if (p.stock_status === "low_stock"){
+    const countPart = p.stock_count ? ` — ${p.stock_count} ${lang === "ar" ? "متبقية" : "left"}` : "";
+    stockNote.textContent = (lang === "ar" ? "كمية محدودة" : "Limited stock") + countPart;
+    stockNote.className = "stock-note low";
+    stockNote.hidden = false;
+    orderBtn.disabled = false; cartBtn.disabled = false;
+  } else {
+    stockNote.hidden = true;
+    orderBtn.disabled = false; cartBtn.disabled = false;
+  }
 
   /* الصور */
   const images = Array.isArray(p.images) && p.images.length
