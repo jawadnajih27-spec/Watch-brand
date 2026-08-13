@@ -34,7 +34,7 @@ function applyStaticI18n(lang){
 
   document.querySelectorAll("[data-i18n]").forEach(el => {
     const key = el.getAttribute("data-i18n");
-    if (DICT[key]) el.innerHTML = DICT[key];
+    if (DICT[key]) el.innerHTML = DICT[key].replace("{brand}", DICT.brand || "");
   });
   document.querySelectorAll("[data-i18n-ph]").forEach(el => {
     const key = el.getAttribute("data-i18n-ph");
