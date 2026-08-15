@@ -35,7 +35,7 @@ function cartTotal(cart){
   return cart.reduce((sum, it) => sum + Number(it.price) * (it.qty || 1), 0);
 }
 
-function buildWhatsAppLink(cart, whatsappNumber){
+function buildWhatsAppLink(cart, whatsappNumber, customerInfo){
   const num = (whatsappNumber || "212600000000").replace(/\D/g, "");
   if (!cart.length) return `https://wa.me/${num}`;
   const isAr = (typeof lang === "undefined") || lang === "ar";
@@ -47,7 +47,19 @@ function buildWhatsAppLink(cart, whatsappNumber){
     const variant = [it.band, it.color].filter(Boolean).join(" / ");
     return `- ${it.name}${variant ? " (" + variant + ")" : ""} — ${Number(it.price).toLocaleString(isAr ? "ar-MA" : "en-US")} ${currency}`;
   });
-  const text = `${greeting}\n${lines.join("\n")}\n\n${totalLabel}: ${cartTotal(cart).toLocaleString(isAr ? "ar-MA" : "en-US")} ${currency}`;
+
+  let text = `${greeting}\n${lines.join("\n")}\n\n${totalLabel}: ${cartTotal(cart).toLocaleString(isAr ? "ar-MA" : "en-US")} ${currency}`;
+
+  if (customerInfo){
+    const labels = isAr
+      ? { name:"الاسم", phone:"الهاتف", city:"المدينة", address:"العنوان" }
+      : { name:"Name", phone:"Phone", city:"City", address:"Address" };
+    const infoLines = ["name", "phone", "city", "address"]
+      .filter(k => customerInfo[k])
+      .map(k => `${labels[k]}: ${customerInfo[k]}`);
+    if (infoLines.length) text += `\n\n${infoLines.join("\n")}`;
+  }
+
   return `https://wa.me/${num}?text=${encodeURIComponent(text)}`;
 }
 
@@ -169,7 +181,7 @@ function wireCartForm(whatsappNumber){
     document.getElementById("cart-order-success").hidden = false;
     form.querySelectorAll("input, textarea, button[type=submit]").forEach(el => el.disabled = true);
 
-    window.open(buildWhatsAppLink(cart, whatsappNumber), "_blank");
+    window.open(buildWhatsAppLink(cart, whatsappNumber, { name, phone, city, address }), "_blank");
     saveCart([]);
     setTimeout(() => document.getElementById("cart-overlay").classList.remove("open"), 1800);
   });
