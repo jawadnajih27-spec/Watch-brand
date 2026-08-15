@@ -458,7 +458,7 @@ async function boot(){
     }
     if (SETTINGS.logo_url){
       document.querySelectorAll(".brand-mark").forEach(el => {
-        el.innerHTML = `<img src="${SETTINGS.logo_url}" alt="" style="width:28px;height:28px;object-fit:contain">`;
+        el.innerHTML = `<img src="${SETTINGS.logo_url}" alt="" style="height:44px;width:auto;display:block;">`;
       });
     }
   }
