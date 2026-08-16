@@ -21,6 +21,7 @@ function addToCart(item){
   const cart = getCart();
   cart.push(item);
   saveCart(cart);
+  if (typeof fbq === "function") fbq("track", "AddToCart", { content_name: item.name, value: item.price, currency: "MAD" });
 }
 function removeFromCart(index){
   const cart = getCart();
@@ -177,6 +178,8 @@ function wireCartForm(whatsappNumber){
 
     cartOrderSubmitted = true;
     if (cartAbandonedId){ deleteAbandonedCart(cartAbandonedId); cartAbandonedId = null; }
+
+    if (typeof fbq === "function") fbq("track", "Purchase", { value: cartTotal(cart), currency: "MAD", num_items: cart.length });
 
     document.getElementById("cart-order-success").hidden = false;
     form.querySelectorAll("input, textarea, button[type=submit]").forEach(el => el.disabled = true);
