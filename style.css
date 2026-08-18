@@ -247,13 +247,6 @@ html:lang(en) .brand-name{ font-family:"Fraunces",serif; }
   background:none; border:none; color:var(--ink-soft); font-size:16px;
 }
 
-/* ---------- whatsapp ---------- */
-.whatsapp-fab{
-  position:fixed; bottom:20px; inset-inline-start:20px; z-index:30;
-  width:52px; height:52px; border-radius:50%; background:#25D366; color:#fff;
-  display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow);
-}
-
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion:reduce){
   html{ scroll-behavior:auto; }
