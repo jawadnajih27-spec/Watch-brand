@@ -93,6 +93,10 @@
       </span>
       <span class="brand-name" data-i18n="brand">أوروم</span>
     </div>
+    <div class="footer-social" id="footer-social" hidden>
+      <p class="footer-social-label" data-i18n="followUs">تواصل معنا</p>
+      <div class="footer-social-icons" id="footer-social-icons"></div>
+    </div>
     <nav class="footer-links" id="footer-links"><!-- تُملأ ديناميكيًا من جدول footer_content --></nav>
     <p class="footer-copy" data-i18n="footerCopy">© 2026 أوروم. جميع الحقوق محفوظة.</p>
   </div>
@@ -240,6 +244,20 @@ function renderFooter(){
   });
 }
 
+/** يبني أيقونات التواصل الاجتماعي — تبان فقط إذا الرابط معمور من اللوحة */
+function renderSocialLinks(){
+  const wrap = document.getElementById("footer-social");
+  const icons = document.getElementById("footer-social-icons");
+  const links = [];
+  if (SETTINGS?.facebook_url) links.push({ url: SETTINGS.facebook_url, label:"Facebook", svg:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="9.3"/><path d="M13.6 9.6h1.7V7.1h-1.7c-1.4 0-2.5 1.1-2.5 2.5v1.3H9.3v2.4h1.8V17h2.4v-3.7h1.8l.4-2.4h-2.2v-1c0-.2.1-.3.1-.3z" stroke-linejoin="round"/></svg>' });
+  if (SETTINGS?.instagram_url) links.push({ url: SETTINGS.instagram_url, label:"Instagram", svg:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r="0.7" fill="currentColor" stroke="none"/></svg>' });
+  if (SETTINGS?.twitter_url) links.push({ url: SETTINGS.twitter_url, label:"X", svg:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>' });
+
+  if (!links.length){ wrap.hidden = true; return; }
+  wrap.hidden = false;
+  icons.innerHTML = links.map(l => `<a href="${l.url}" target="_blank" rel="noopener" aria-label="${l.label}">${l.svg}</a>`).join("");
+}
+
 async function refreshUI(){
   await loadI18n(lang);
   applyBrandOverride(SETTINGS, lang);
@@ -286,7 +304,11 @@ async function boot(){
         el.innerHTML = `<img src="${SETTINGS.logo_url}" alt="" style="height:44px;width:auto;display:block;">`;
       });
     }
+    if (SETTINGS.whatsapp_number){
+      document.querySelector(".whatsapp-fab").href = "https://wa.me/" + SETTINGS.whatsapp_number.replace(/\D/g, "");
+    }
   }
+  renderSocialLinks();
 
   PRODUCTS = await fetchActiveProducts();
   FOOTER = await fetchFooterContent();
