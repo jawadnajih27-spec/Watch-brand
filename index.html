@@ -130,10 +130,6 @@
   </div>
 </div>
 
-<!-- ============ WHATSAPP ============ -->
-<a class="whatsapp-fab" href="https://wa.me/212600000000" target="_blank" rel="noopener" aria-label="واتساب">
-  <svg viewBox="0 0 32 32" width="26" height="26"><path fill="currentColor" d="M16 3C9 3 3.3 8.6 3.3 15.6c0 2.4.7 4.7 1.9 6.6L3 29l7-1.9c1.8 1 3.9 1.5 6 1.5 7 0 12.7-5.6 12.7-12.6C28.7 8.6 23 3 16 3zm0 23c-1.9 0-3.7-.5-5.3-1.4l-.4-.2-4.2 1.1 1.1-4.1-.2-.4A10.4 10.4 0 0 1 5.6 15.6C5.6 9.9 10.3 5.3 16 5.3S26.4 9.9 26.4 15.6 21.7 26 16 26zm5.8-7.8c-.3-.2-1.9-.9-2.2-1s-.5-.2-.7.2-.8 1-.9 1.2-.3.2-.6.1a8.6 8.6 0 0 1-2.5-1.5 9.3 9.3 0 0 1-1.7-2.1c-.2-.3 0-.5.1-.6l.4-.5.3-.4c.1-.2 0-.4 0-.5s-.7-1.6-.9-2.2-.4-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.8 1.2 3 2 3 4.7 4.2c.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.9-.8 2.1-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.2-.6-.4z"/></svg>
-</a>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="assets/supabase-client.js"></script>
@@ -249,9 +245,10 @@ function renderSocialLinks(){
   const wrap = document.getElementById("footer-social");
   const icons = document.getElementById("footer-social-icons");
   const links = [];
-  if (SETTINGS?.facebook_url) links.push({ url: SETTINGS.facebook_url, label:"Facebook", svg:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="9.3"/><path d="M13.6 9.6h1.7V7.1h-1.7c-1.4 0-2.5 1.1-2.5 2.5v1.3H9.3v2.4h1.8V17h2.4v-3.7h1.8l.4-2.4h-2.2v-1c0-.2.1-.3.1-.3z" stroke-linejoin="round"/></svg>' });
-  if (SETTINGS?.instagram_url) links.push({ url: SETTINGS.instagram_url, label:"Instagram", svg:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r="0.7" fill="currentColor" stroke="none"/></svg>' });
-  if (SETTINGS?.twitter_url) links.push({ url: SETTINGS.twitter_url, label:"X", svg:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>' });
+  if (SETTINGS?.whatsapp_number) links.push({ url:"https://wa.me/" + SETTINGS.whatsapp_number.replace(/\D/g,""), label:"WhatsApp", svg:'<svg viewBox="0 0 32 32" width="20" height="20"><path fill="currentColor" d="M16 3C9 3 3.3 8.6 3.3 15.6c0 2.4.7 4.7 1.9 6.6L3 29l7-1.9c1.8 1 3.9 1.5 6 1.5 7 0 12.7-5.6 12.7-12.6C28.7 8.6 23 3 16 3zm0 23c-1.9 0-3.7-.5-5.3-1.4l-.4-.2-4.2 1.1 1.1-4.1-.2-.4A10.4 10.4 0 0 1 5.6 15.6C5.6 9.9 10.3 5.3 16 5.3S26.4 9.9 26.4 15.6 21.7 26 16 26zm5.8-7.8c-.3-.2-1.9-.9-2.2-1s-.5-.2-.7.2-.8 1-.9 1.2-.3.2-.6.1a8.6 8.6 0 0 1-2.5-1.5 9.3 9.3 0 0 1-1.7-2.1c-.2-.3 0-.5.1-.6l.4-.5.3-.4c.1-.2 0-.4 0-.5s-.7-1.6-.9-2.2-.4-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.8 1.2 3 2 3 4.7 4.2c.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.9-.8 2.1-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.2-.6-.4z"/></svg>' });
+  if (SETTINGS?.facebook_url) links.push({ url: SETTINGS.facebook_url, label:"Facebook", svg:'<svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12z"/></svg>' });
+  if (SETTINGS?.instagram_url) links.push({ url: SETTINGS.instagram_url, label:"Instagram", svg:'<svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 2c-2.7 0-3.06.01-4.12.06-1.06.05-1.79.22-2.43.47-.66.26-1.22.6-1.77 1.16-.56.55-.9 1.11-1.16 1.77-.25.64-.42 1.37-.47 2.43C2 8.94 2 9.3 2 12s.01 3.06.06 4.12c.05 1.06.22 1.79.47 2.43.26.66.6 1.22 1.16 1.77.55.56 1.11.9 1.77 1.16.64.25 1.37.42 2.43.47C8.94 22 9.3 22 12 22s3.06-.01 4.12-.06c1.06-.05 1.79-.22 2.43-.47.66-.26 1.22-.6 1.77-1.16.56-.55.9-1.11 1.16-1.77.25-.64.42-1.37.47-2.43.05-1.06.06-1.42.06-4.12s-.01-3.06-.06-4.12c-.05-1.06-.22-1.79-.47-2.43a4.9 4.9 0 0 0-1.16-1.77 4.9 4.9 0 0 0-1.77-1.16c-.64-.25-1.37-.42-2.43-.47C15.06 2.01 14.7 2 12 2zm0 1.8c2.67 0 2.99.01 4.04.06.97.04 1.5.2 1.85.34.47.18.8.4 1.15.75.35.35.57.68.75 1.15.14.35.3.88.34 1.85.05 1.05.06 1.37.06 4.04s-.01 2.99-.06 4.04c-.04.97-.2 1.5-.34 1.85-.18.47-.4.8-.75 1.15-.35.35-.68.57-1.15.75-.35.14-.88.3-1.85.34-1.05.05-1.37.06-4.04.06s-2.99-.01-4.04-.06c-.97-.04-1.5-.2-1.85-.34a3.1 3.1 0 0 1-1.15-.75 3.1 3.1 0 0 1-.75-1.15c-.14-.35-.3-.88-.34-1.85-.05-1.05-.06-1.37-.06-4.04s.01-2.99.06-4.04c.04-.97.2-1.5.34-1.85.18-.47.4-.8.75-1.15.35-.35.68-.57 1.15-.75.35-.14.88-.3 1.85-.34C9.01 3.81 9.33 3.8 12 3.8zm0 3.05a5.15 5.15 0 1 0 0 10.3 5.15 5.15 0 0 0 0-10.3zm0 8.5a3.35 3.35 0 1 1 0-6.7 3.35 3.35 0 0 1 0 6.7zm6.55-8.7a1.2 1.2 0 1 1-2.4 0 1.2 1.2 0 0 1 2.4 0z"/></svg>' });
+  if (SETTINGS?.twitter_url) links.push({ url: SETTINGS.twitter_url, label:"X", svg:'<svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M18.9 2H22l-7.2 8.2L23 22h-6.6l-5.2-6.8L5.2 22H2l7.7-8.8L1 2h6.8l4.7 6.2L18.9 2zm-1.2 18h1.8L7.4 4H5.5l12.2 16z"/></svg>' });
 
   if (!links.length){ wrap.hidden = true; return; }
   wrap.hidden = false;
@@ -303,9 +300,6 @@ async function boot(){
       document.querySelectorAll(".brand-mark").forEach(el => {
         el.innerHTML = `<img src="${SETTINGS.logo_url}" alt="" style="height:44px;width:auto;display:block;">`;
       });
-    }
-    if (SETTINGS.whatsapp_number){
-      document.querySelector(".whatsapp-fab").href = "https://wa.me/" + SETTINGS.whatsapp_number.replace(/\D/g, "");
     }
   }
   renderSocialLinks();
