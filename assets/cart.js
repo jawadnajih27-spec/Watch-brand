@@ -6,7 +6,8 @@
    - عند التأكيد: يُسجَّل طلب حقيقي لكل منتج فالسلة + يُفتح واتساب كملخّص
    ===================================================================== */
 const CART_KEY = "aurum_cart";
-let cartAbandonedId = null;
+const ABANDONED_ID_KEY = "aurum_cart_abandoned_id";
+let cartAbandonedId = localStorage.getItem(ABANDONED_ID_KEY) || null;
 let cartOrderSubmitted = false;
 
 function getCart(){
@@ -136,6 +137,7 @@ async function saveCartAbandoned(form){
 
   if (cartAbandonedId) return;
   cartAbandonedId = await logAbandonedCart(entry);
+  if (cartAbandonedId) localStorage.setItem(ABANDONED_ID_KEY, cartAbandonedId);
 }
 
 /** يربط أحداث نموذج تأكيد السلة مرة واحدة فقط (يتفادى تكرار الربط عند كل فتح) */
@@ -177,7 +179,11 @@ function wireCartForm(whatsappNumber){
     if (error){ alert("خطأ: " + error.message); return; }
 
     cartOrderSubmitted = true;
-    if (cartAbandonedId){ deleteAbandonedCart(cartAbandonedId); cartAbandonedId = null; }
+    if (cartAbandonedId){
+      deleteAbandonedCart(cartAbandonedId);
+      cartAbandonedId = null;
+      localStorage.removeItem(ABANDONED_ID_KEY);
+    }
 
     if (typeof fbq === "function") fbq("track", "Purchase", { value: cartTotal(cart), currency: "MAD", num_items: cart.length });
 
