@@ -417,6 +417,7 @@ orderForm.addEventListener("input", debounce(async () => {
 
 orderForm.addEventListener("submit", async (e) => {
   e.preventDefault();
+  orderSubmitted = true;
   const ok = await insertOrder({
     product_id: PRODUCT.id,
     product_name: lang === "ar" ? PRODUCT.name_ar : PRODUCT.name_en,
@@ -430,17 +431,15 @@ orderForm.addEventListener("submit", async (e) => {
     address: orderForm.address.value.trim(),
     notes: orderForm.notes.value.trim()
   });
-  if (ok){
-    orderSubmitted = true;
-    if (abandonedCartId){
-      deleteAbandonedCart(abandonedCartId);
-      abandonedCartId = null;
-      localStorage.removeItem(ORDER_ABANDONED_ID_KEY);
-    }
-    document.getElementById("order-success").hidden = false;
-    orderForm.querySelectorAll("input, textarea, button[type=submit]").forEach(el => el.disabled = true);
-    setTimeout(() => orderOverlay.classList.remove("open"), 2200);
+  if (!ok){ orderSubmitted = false; return; }
+  if (abandonedCartId){
+    deleteAbandonedCart(abandonedCartId);
+    abandonedCartId = null;
+    localStorage.removeItem(ORDER_ABANDONED_ID_KEY);
   }
+  document.getElementById("order-success").hidden = false;
+  orderForm.querySelectorAll("input, textarea, button[type=submit]").forEach(el => el.disabled = true);
+  setTimeout(() => orderOverlay.classList.remove("open"), 2200);
 });
 
 /* ---------- الفوتر الديناميكي (سياسات/من نحن) ---------- */
