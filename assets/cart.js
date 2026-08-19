@@ -157,6 +157,7 @@ function wireCartForm(whatsappNumber){
     e.preventDefault();
     const cart = getCart();
     if (!cart.length) return;
+    cartOrderSubmitted = true;
 
     const name = form.customer_name.value.trim();
     const phone = form.phone.value.trim();
@@ -176,9 +177,8 @@ function wireCartForm(whatsappNumber){
     }));
 
     const { error } = await sb.from("orders").insert(rows);
-    if (error){ alert("خطأ: " + error.message); return; }
+    if (error){ cartOrderSubmitted = false; alert("خطأ: " + error.message); return; }
 
-    cartOrderSubmitted = true;
     if (cartAbandonedId){
       deleteAbandonedCart(cartAbandonedId);
       cartAbandonedId = null;
