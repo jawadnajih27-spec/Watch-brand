@@ -181,7 +181,8 @@ let PRODUCT = null;
 let FOOTER = [];
 let SETTINGS = null;
 let selectedBand = null, selectedColor = null;
-let abandonedCartId = null;
+const ORDER_ABANDONED_ID_KEY = "aurum_order_abandoned_id";
+let abandonedCartId = localStorage.getItem(ORDER_ABANDONED_ID_KEY) || null;
 let orderSubmitted = false;
 
 function fmtPrice(n){ return Number(n).toLocaleString(lang === "ar" ? "ar-MA" : "en-US"); }
@@ -410,6 +411,7 @@ orderForm.addEventListener("input", debounce(async () => {
       address: orderForm.address.value.trim(),
       last_field_filled: document.activeElement?.name || null
     });
+    if (abandonedCartId) localStorage.setItem(ORDER_ABANDONED_ID_KEY, abandonedCartId);
   }
 }, 1200));
 
@@ -430,7 +432,11 @@ orderForm.addEventListener("submit", async (e) => {
   });
   if (ok){
     orderSubmitted = true;
-    if (abandonedCartId) deleteAbandonedCart(abandonedCartId);
+    if (abandonedCartId){
+      deleteAbandonedCart(abandonedCartId);
+      abandonedCartId = null;
+      localStorage.removeItem(ORDER_ABANDONED_ID_KEY);
+    }
     document.getElementById("order-success").hidden = false;
     orderForm.querySelectorAll("input, textarea, button[type=submit]").forEach(el => el.disabled = true);
     setTimeout(() => orderOverlay.classList.remove("open"), 2200);
